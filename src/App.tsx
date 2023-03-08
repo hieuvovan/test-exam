@@ -3,11 +3,10 @@ import './App.css';
 import { login } from './services/auth';
 import Appointments from './components/Appointments';
 import { getAppointments } from './services/appointments';
-import { AppointmentSlot } from './zoomcare-api';
-import { AuthStorageService } from './services/auth-storage';
+import { AppointmentSlot, Provider } from './zoomcare-api';
 
 function App() {
-  const [appointments, setAppointments] = useState<AppointmentSlot[]>([]);
+  const [providers, setProviders] = useState<Provider[]>([]);
 
   useEffect(() => {
     initApp();
@@ -31,12 +30,23 @@ function App() {
     const appointmentSlots: AppointmentSlot[] =
       (await getAppointments()) as AppointmentSlot[];
 
-    setAppointments(appointmentSlots);
+    const providers = appointmentSlots.reduce((prev, current): any => {
+      return [
+        ...prev,
+        {
+          ...current.provider,
+          startTime: current.startTime,
+          clinicId: current.clinicId,
+        },
+      ];
+    }, []);
+
+    setProviders(providers);
   };
 
   return (
     <div className="App">
-      <Appointments appointments={appointments} />
+      <Appointments providers={providers} />
     </div>
   );
 }

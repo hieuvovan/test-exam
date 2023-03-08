@@ -1,29 +1,31 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { getClinicById } from '../services/appointments';
-import { AppointmentSlot, Clinic } from '../zoomcare-api';
+import { AppointmentSlot, Clinic, Provider } from '../zoomcare-api';
 import ProviderImage from '../provider.png';
 import { formatAMPM, formatPhonenumber } from '../utils';
 
 interface Props {
-  appointment: AppointmentSlot;
+  provider: Provider;
 }
 
-export default function AppointmentItem({ appointment }: Props) {
+export default function AppointmentItem({ provider }: Props) {
   const [clinic, setClinic] = useState<Clinic>();
 
   useEffect(() => {
-    if (appointment.clinicId) fetchClinic();
-  }, [appointment.clinicId]);
+    if (provider.clinicId) fetchClinic();
+  }, [provider.clinicId]);
 
   const fetchClinic = async () => {
-    const clinic = await getClinicById(String(appointment.clinicId));
+    const clinic = await getClinicById(String(provider.clinicId));
 
     setClinic(clinic);
   };
 
   const renderTimeButton = useCallback(() => {
-    const secondTime = appointment.startTime.split(' ')[1].split('-')[0];
-    const firstTime = appointment.startTime.split(' ')[1].split('-')[1];
+    const date = provider.startTime?.split(' ')[0];
+    const time = provider.startTime?.split(' ')[1];
+    const secondTime = `${date} ${time?.split('-')[1]} UTC`;
+    const firstTime = `${date} ${time?.split('-')[0]} UTC`;
 
     return (
       <div className="btn-group">
@@ -31,7 +33,7 @@ export default function AppointmentItem({ appointment }: Props) {
         <button className="btn-time">{formatAMPM(secondTime)}</button>
       </div>
     );
-  }, [appointment.startTime]);
+  }, [provider.startTime]);
 
   return clinic ? (
     <div className="appointment">
@@ -45,12 +47,12 @@ export default function AppointmentItem({ appointment }: Props) {
         <img
           className="provider-img"
           src={ProviderImage}
-          alt={appointment.provider.name}
+          alt={provider.name}
         />
         <div className="provider-info">
-          <h4 className="provider-title">{`${appointment.provider.name}, ${appointment.provider.credentials}`}</h4>
+          <h4 className="provider-title">{`${provider.name}, ${provider.credentials}`}</h4>
           <p className="provider-phone text-gray">
-            {formatPhonenumber(appointment.provider.phoneNumber + '')}
+            {formatPhonenumber(provider.phoneNumber + '')}
           </p>
           {renderTimeButton()}
         </div>

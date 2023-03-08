@@ -5,12 +5,14 @@ export const formatPhonenumber = (phonenumber: string) => {
   return `(${code.split(' ')[1]}) ${restArray.join('-')}`;
 };
 
-export const formatAMPM = (time: string) => {
-  let hours = +time.split(':')[0];
-  let minutes = time.split(':')[1];
+export const formatAMPM = (dateString: string) => {
+  const date = new Date(dateString);
+  let hours = date.getHours();
+  let minutes: any = date.getMinutes();
   let ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12;
   hours = hours ? hours : 12;
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
   const strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
 };

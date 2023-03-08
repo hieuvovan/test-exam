@@ -1,20 +1,20 @@
 import React from 'react';
-import { AppointmentSlot } from '../zoomcare-api';
+import { AppointmentSlot, Provider } from '../zoomcare-api';
 import AppointmentItem from './AppointmentItem';
 
 interface Props {
-  appointments: AppointmentSlot[];
+  providers: Provider[];
 }
 
-export default function Appointments({ appointments }: Props) {
+export default function Appointments({ providers }: Props) {
   return (
     <ul className="appointment-list">
-      {appointments?.map((appointment: AppointmentSlot) => (
+      {providers?.map((provider: Provider) => (
         <li
-          key={appointment.id}
+          key={provider.id}
           className="appointment-item"
         >
-          <AppointmentItem appointment={appointment} />
+          <AppointmentItem provider={provider} />
         </li>
       ))}
     </ul>
