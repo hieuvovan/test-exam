@@ -1,29 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import { getAppointments } from '../services/appointments'
-import {  AppointmentSlot } from '../zoomcare-api'
-import AppointmentItem from './AppointmentItem'
+import React from 'react';
+import { AppointmentSlot } from '../zoomcare-api';
+import AppointmentItem from './AppointmentItem';
 
-export default function Appointments() {
-  const [appointments, setAppointments] = useState<AppointmentSlot[]>([])
+interface Props {
+  appointments: AppointmentSlot[];
+}
 
-  useEffect(() => {
-    fetchAppointments()
-  }, [])
-
-  const fetchAppointments = async () => {
-    const appointmentSlots: AppointmentSlot[] = await getAppointments() as AppointmentSlot[]
-
-    setAppointments(appointmentSlots)
-  }
-
-
+export default function Appointments({ appointments }: Props) {
   return (
-    <ul className='appointment-list'>
+    <ul className="appointment-list">
       {appointments.map((appointment: AppointmentSlot) => (
-        <li key={appointment.id} className='appointment-item'>
+        <li
+          key={appointment.id}
+          className="appointment-item"
+        >
           <AppointmentItem appointment={appointment} />
         </li>
       ))}
     </ul>
-  )
+  );
 }
