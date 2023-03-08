@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { getClinicById } from '../services/appointments';
 import { AppointmentSlot, Clinic } from '../zoomcare-api';
 import ProviderImage from '../provider.png';
+import { formatAMPM, formatPhonenumber } from '../utils';
 
 interface Props {
   appointment: AppointmentSlot;
@@ -20,14 +21,16 @@ export default function AppointmentItem({ appointment }: Props) {
     setClinic(clinic);
   };
 
-  const formatTime = useCallback(() => {
-    const date = new Date(appointment.startTime);
+  const renderTimeButton = useCallback(() => {
+    const secondTime = appointment.startTime.split(' ')[1].split('-')[0];
+    const firstTime = appointment.startTime.split(' ')[1].split('-')[1];
 
-    return date.toLocaleString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    });
+    return (
+      <div className="btn-group">
+        <button className="btn-time">{formatAMPM(firstTime)}</button>
+        <button className="btn-time">{formatAMPM(secondTime)}</button>
+      </div>
+    );
   }, [appointment.startTime]);
 
   return clinic ? (
@@ -47,9 +50,9 @@ export default function AppointmentItem({ appointment }: Props) {
         <div className="provider-info">
           <h4 className="provider-title">{`${appointment.provider.name}, ${appointment.provider.credentials}`}</h4>
           <p className="provider-phone text-gray">
-            {appointment.provider.phoneNumber}
+            {formatPhonenumber(appointment.provider.phoneNumber + '')}
           </p>
-          <button className="btn-time">{formatTime()}</button>
+          {renderTimeButton()}
         </div>
       </div>
     </div>

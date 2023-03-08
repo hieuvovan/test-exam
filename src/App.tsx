@@ -6,8 +6,6 @@ import { getAppointments } from './services/appointments';
 import { AppointmentSlot } from './zoomcare-api';
 import { AuthStorageService } from './services/auth-storage';
 
-const authStorage = new AuthStorageService();
-
 function App() {
   const [appointments, setAppointments] = useState<AppointmentSlot[]>([]);
 
@@ -16,7 +14,7 @@ function App() {
   }, []);
 
   const initApp = async () => {
-    if (!authStorage.token) await handleLogin();
+    await handleLogin();
     fetchAppointments();
   };
 

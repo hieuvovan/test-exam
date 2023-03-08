@@ -9,7 +9,7 @@ interface Props {
 export default function Appointments({ appointments }: Props) {
   return (
     <ul className="appointment-list">
-      {appointments.map((appointment: AppointmentSlot) => (
+      {appointments?.map((appointment: AppointmentSlot) => (
         <li
           key={appointment.id}
           className="appointment-item"
