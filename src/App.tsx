@@ -1,24 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import { login } from './services/auth';
+import Appointments from './components/Appointments';
+import { getAppointments } from './services/appointments';
+import { AppointmentSlot, Provider } from './zoomcare-api';
 
 function App() {
+  const [providers, setProviders] = useState<Provider[]>([]);
+
+  useEffect(() => {
+    initApp();
+  }, []);
+
+  const initApp = async () => {
+    await handleLogin();
+    fetchAppointments();
+  };
+
+  const handleLogin = async () => {
+    const loginBody = {
+      username: 'HieuVo',
+      password: '12345678',
+    };
+
+    await login(loginBody);
+  };
+
+  const fetchAppointments = async () => {
+    const appointmentSlots: AppointmentSlot[] =
+      (await getAppointments()) as AppointmentSlot[];
+
+    const providers = appointmentSlots.reduce((prev, current): any => {
+      return [
+        ...prev,
+        {
+          ...current.provider,
+          startTime: current.startTime,
+          clinicId: current.clinicId,
+        },
+      ];
+    }, []);
+
+    setProviders(providers);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Appointments providers={providers} />
     </div>
   );
 }

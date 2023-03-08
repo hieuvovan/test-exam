@@ -1,5 +1,8 @@
 .App {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -26,6 +29,102 @@
 
 .App-link {
   color: #61dafb;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  padding: 0;
+}
+
+/* Appointment CSS */
+.appointment-list {
+  width: 60%;
+}
+/* End */
+
+/* Clinic CSS */
+.appointment {
+  border: 1px solid #f0f0f0;
+  padding: 24px;
+}
+
+.clinic {
+  padding-bottom: 32px;
+}
+
+.clinic-name {
+  color: #2f424a;
+}
+
+.clinic-location {
+  max-width: 180px;
+  padding-top: 8px;
+}
+/* End */
+
+/* Provider CSS */
+.provider {
+  display: flex;
+  align-items: center;
+}
+
+.provider-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.provider-info {
+  padding-left: 16px;
+}
+
+.provider-title {
+  color: #31c0e7;
+}
+
+.provider-phone {
+  padding: 4px 0;
+}
+
+.provider .btn-time {
+  background-color: #2f424b;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 8px 24px;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.provider .btn-time:hover {
+  background-color: black;
+}
+
+.provider .btn-time:active {
+  transform: scale(0.95);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+.provider .btn-time:first-child {
+  margin-right: 12px;
+}
+/* End */
+
+/* Text state */
+.text-gray {
+  color: #606472;
 }
 
 @keyframes App-logo-spin {
